@@ -108,7 +108,7 @@ const BookCard = ({
     <Card
       className={`w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 mx-auto ${getCardStyle()}`}
     >
-      <div className="relative w-full h-[280px] overflow-hidden">
+      <div className="relative w-full h-[calc(480px*2/5)] overflow-hidden">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
