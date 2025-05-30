@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import BookCard from "./BookCard";
+import { useNavigate } from "react-router-dom";
 
 interface Book {
   id: string;
@@ -232,8 +233,13 @@ const UserProfile = ({
     },
   ];
 
+  const navigate = useNavigate();
+
   return (
     <div className="container mx-auto py-8 bg-background">
+      <Button variant="outline" className="mb-4" onClick={() => navigate(-1)}>
+        Back
+      </Button>
       <div className="flex flex-col md:flex-row gap-8">
         {/* Profile Sidebar */}
         <div className="md:w-1/3">

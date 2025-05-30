@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -174,6 +174,8 @@ const Messages = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -187,7 +189,9 @@ const Messages = () => {
           </div>
         </div>
       </header>
-
+      <Button variant="outline" className="m-4" onClick={() => navigate(-1)}>
+        Back
+      </Button>
       {/* Main content */}
       <main className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row h-[calc(100vh-12rem)] border rounded-lg overflow-hidden">

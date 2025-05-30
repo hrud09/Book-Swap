@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -65,6 +65,7 @@ const BookDetail = ({
   const [exchangeDialogOpen, setExchangeDialogOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<string[]>([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   // Mock user's books available for exchange
   const myBooks = [
@@ -119,6 +120,9 @@ const BookDetail = ({
 
   return (
     <div className="container mx-auto p-4 max-w-6xl bg-background">
+      <Button variant="outline" className="mb-4" onClick={() => navigate(-1)}>
+        Back
+      </Button>
       <div className="grid md:grid-cols-3 gap-8">
         {/* Book Cover and Quick Info */}
         <div className="md:col-span-1">
