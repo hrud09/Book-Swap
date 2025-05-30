@@ -61,6 +61,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import BookCard from "./BookCard";
 import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 interface Book {
   id: string;
@@ -627,17 +628,8 @@ const UserProfile = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {/* Remove Cover Photo Section */}
-      <header className="bg-white/90 backdrop-blur-md shadow-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold text-primary">BookSwap</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header */}
+      <Header />
       <div className="container mx-auto py-4">
         <Button
           variant="outline"

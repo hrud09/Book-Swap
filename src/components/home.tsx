@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import BookGrid from "./BookGrid";
+import Header from "./Header";
 
 const Home = () => {
   // Mock state for mobile menu
@@ -83,84 +84,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background border-b border-border shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">BookSwap</span>
-            </Link>
-          </div>
-
-          {/* Navigation - desktop */}
-          <nav className="hidden md:flex items-center space-x-4">
-            <Link to="/UserProfile">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center space-x-1"
-              >
-                <User className="h-4 w-4" />
-                <span>Profile</span>
-              </Button>
-            </Link>
-            <Link to="/messages">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center space-x-1"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span>Messages</span>
-              </Button>
-            </Link>
-            <Button size="sm" onClick={() => setShowAddBookDialog(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Book
-            </Button>
-          </nav>
-
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border p-4 bg-background">
-            <div className="flex items-center mb-4">
-              {/* Removed search bar here */}
-            </div>
-            <nav className="flex flex-col space-y-2">
-              <Link to="/UserProfile">
-                <Button variant="ghost" className="w-full justify-start">
-                  <User className="h-4 w-4 mr-2" />
-                  Profile
-                </Button>
-              </Link>
-              <Link to="/messages">
-                <Button variant="ghost" className="w-full justify-start">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Messages
-                </Button>
-              </Link>
-              <Button
-                className="w-full"
-                onClick={() => setShowAddBookDialog(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Book
-              </Button>
-            </nav>
-          </div>
-        )}
-      </header>
+      <Header />
 
       {/* Main content */}
       <main className="flex-1 container mx-auto px-4 py-6">

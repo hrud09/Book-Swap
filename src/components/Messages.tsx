@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { BookOpen, Search, ArrowLeft, Send, MessageCircle } from "lucide-react";
+import { BookOpen, Search, ArrowLeft, Send, MessageCircle, Star, User, Calendar } from "lucide-react";
+import Header from "./Header";
 
 interface Message {
   id: string;
@@ -178,28 +179,21 @@ const Messages = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-md">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-white" />
-              <span className="text-xl font-bold">BookSwap</span>
-            </Link>
-          </div>
-        </div>
-      </header>
-      <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4">
-        <Button
-          variant="outline"
-          className="hover:bg-blue-100 flex items-center gap-2"
-          onClick={() => navigate("/")}
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </Button>
-      </div>
+      <Header />
       {/* Main content */}
-      <main className="container mx-2 sm:px-4 py-6">
+      <main className="container mx-auto py-6">
+        {/* Back button */}
+        <div className="mb-4">
+          <Button
+            variant="outline"
+            className="hover:bg-blue-100 flex items-center gap-2"
+            onClick={() => navigate("/")}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Button>
+        </div>
+
         <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
           <MessageCircle className="h-6 w-6 text-primary" />
           Messages
