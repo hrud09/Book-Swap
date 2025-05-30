@@ -7,7 +7,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { BookOpen, Search, ArrowLeft, Send, MessageCircle, Star, User, Calendar } from "lucide-react";
+import {
+  BookOpen,
+  Search,
+  ArrowLeft,
+  Send,
+  MessageCircle,
+  Star,
+  User,
+  Calendar,
+} from "lucide-react";
 import Header from "./Header";
 
 interface Message {
@@ -72,7 +81,7 @@ const Messages = () => {
 
   const [selectedConversation, setSelectedConversation] = useState<
     string | null
-  >("1");
+  >(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([
@@ -198,17 +207,19 @@ const Messages = () => {
           <MessageCircle className="h-6 w-6 text-primary" />
           Messages
         </h1>
-        <div className="flex flex-col md:flex-row h-[calc(100vh-14rem)] border rounded-lg overflow-hidden shadow-md bg-white">
+        <div className="flex flex-col lg:flex-row h-[calc(100vh-14rem)] border rounded-lg overflow-hidden shadow-md bg-white">
           {/* Conversations sidebar */}
-          <div className="w-full md:w-1/3 border-r">
-            <div className="p-4 border-b">
+          <div
+            className={`w-full lg:w-1/3 border-r ${selectedConversation ? "hidden lg:block" : "block"}`}
+          >
+            <div className="p-3 lg:p-4 border-b">
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search conversations"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 text-sm lg:text-base"
                 />
               </div>
             </div>
@@ -216,34 +227,34 @@ const Messages = () => {
               {filteredConversations.map((conversation) => (
                 <div
                   key={conversation.id}
-                  className={`p-4 border-b cursor-pointer hover:bg-blue-50 transition-all duration-200 ${selectedConversation === conversation.id ? "bg-blue-100 border-l-4 border-l-primary" : ""}`}
+                  className={`p-3 lg:p-4 border-b cursor-pointer hover:bg-blue-50 transition-all duration-200 ${selectedConversation === conversation.id ? "bg-blue-100 border-l-4 border-l-primary" : ""}`}
                   onClick={() => setSelectedConversation(conversation.id)}
                 >
-                  <div className="flex items-center gap-3">
-                    <Avatar>
+                  <div className="flex items-center gap-2 lg:gap-3">
+                    <Avatar className="h-8 w-8 lg:h-10 lg:w-10">
                       <AvatarImage
                         src={conversation.userAvatar}
                         alt={conversation.userName}
                       />
-                      <AvatarFallback>
+                      <AvatarFallback className="text-xs lg:text-sm">
                         {conversation.userName.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-center">
-                        <h3 className="font-medium truncate">
+                        <h3 className="font-medium truncate text-sm lg:text-base">
                           {conversation.userName}
                         </h3>
                         <span className="text-xs text-muted-foreground">
                           {formatTime(conversation.lastMessageTime)}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground truncate">
+                      <p className="text-xs lg:text-sm text-muted-foreground truncate">
                         {conversation.lastMessage}
                       </p>
                     </div>
                     {conversation.unreadCount > 0 && (
-                      <div className="min-w-5 h-5 bg-primary rounded-full flex items-center justify-center text-xs text-primary-foreground">
+                      <div className="min-w-4 h-4 lg:min-w-5 lg:h-5 bg-primary rounded-full flex items-center justify-center text-xs text-primary-foreground">
                         {conversation.unreadCount}
                       </div>
                     )}
@@ -255,17 +266,22 @@ const Messages = () => {
 
           {/* Message area */}
           {selectedConversation ? (
-            <div className="flex-1 flex flex-col">
+            <div
+              className={`flex-1 flex flex-col ${selectedConversation ? "block" : "hidden lg:block"}`}
+            >
               {/* Conversation header */}
-              <div className="p-4 border-b flex items-center gap-3">
-                <Link to="/" className="md:hidden">
-                  <Button variant="ghost" size="icon">
-                    <ArrowLeft className="h-4 w-4" />
-                  </Button>
-                </Link>
+              <div className="p-3 lg:p-4 border-b flex items-center gap-2 lg:gap-3">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden h-8 w-8"
+                  onClick={() => setSelectedConversation(null)}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
                 {selectedConversation && (
                   <>
-                    <Avatar>
+                    <Avatar className="h-8 w-8 lg:h-10 lg:w-10">
                       <AvatarImage
                         src={
                           conversations.find(
@@ -278,14 +294,14 @@ const Messages = () => {
                           )?.userName
                         }
                       />
-                      <AvatarFallback>
+                      <AvatarFallback className="text-xs lg:text-sm">
                         {conversations
                           .find((c) => c.id === selectedConversation)
                           ?.userName.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium">
+                      <h3 className="font-medium text-sm lg:text-base">
                         {
                           conversations.find(
                             (c) => c.id === selectedConversation,
@@ -298,8 +314,8 @@ const Messages = () => {
               </div>
 
               {/* Messages */}
-              <ScrollArea className="flex-1 p-4">
-                <div className="space-y-4">
+              <ScrollArea className="flex-1 p-2 lg:p-4">
+                <div className="space-y-3 lg:space-y-4">
                   {messages
                     .filter(
                       (message) =>
@@ -320,9 +336,9 @@ const Messages = () => {
                         className={`flex ${message.senderId === "current-user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[70%] rounded-lg p-3 shadow-sm ${message.senderId === "current-user" ? "bg-primary text-primary-foreground" : "bg-blue-50 border border-blue-100"}`}
+                          className={`max-w-[85%] lg:max-w-[70%] rounded-lg p-2 lg:p-3 shadow-sm ${message.senderId === "current-user" ? "bg-primary text-primary-foreground" : "bg-blue-50 border border-blue-100"}`}
                         >
-                          <p>{message.text}</p>
+                          <p className="text-sm lg:text-base">{message.text}</p>
                           <div
                             className={`text-xs mt-1 ${message.senderId === "current-user" ? "text-primary-foreground/70" : "text-muted-foreground"}`}
                           >
@@ -335,13 +351,13 @@ const Messages = () => {
               </ScrollArea>
 
               {/* Message input */}
-              <div className="p-4 border-t bg-gradient-to-r from-blue-50 to-white">
+              <div className="p-2 lg:p-4 border-t bg-gradient-to-r from-blue-50 to-white">
                 <div className="flex gap-2">
                   <Textarea
                     placeholder="Type a message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="min-h-[60px] resize-none border-blue-200 focus:border-blue-400 shadow-sm"
+                    className="min-h-[50px] lg:min-h-[60px] resize-none border-blue-200 focus:border-blue-400 shadow-sm text-sm lg:text-base"
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
@@ -350,12 +366,12 @@ const Messages = () => {
                     }}
                   />
                   <Button
-                    className="self-end transition-all duration-200 hover:scale-105"
+                    className="self-end transition-all duration-200 hover:scale-105 h-8 w-8 lg:h-10 lg:w-10"
                     size="icon"
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim()}
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="h-3 w-3 lg:h-4 lg:w-4" />
                   </Button>
                 </div>
               </div>

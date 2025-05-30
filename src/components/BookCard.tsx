@@ -108,7 +108,7 @@ const BookCard = ({
     <Card
       className={`w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 mx-auto ${getCardStyle()}`}
     >
-      <div className="relative w-full h-[calc(480px*2/5)] overflow-hidden">
+      <div className="relative w-full h-1/2 overflow-hidden">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -262,7 +262,7 @@ const BookCard = ({
 
       <CardFooter className="pt-0 flex flex-col gap-2">
         <Button
-          className={`w-full font-medium transition-all duration-300 hover:scale-[1.02] ${!isForSale && isForExchange ? 'bg-yellow-400 text-white hover:bg-yellow-500' : ''}`}
+          className={`w-full font-medium transition-all duration-300 hover:scale-[1.02] ${!isForSale && isForExchange ? "bg-yellow-400 text-white hover:bg-yellow-500" : ""}`}
           variant={
             isForSale && isForExchange
               ? "default"
