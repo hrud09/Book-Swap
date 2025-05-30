@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -224,9 +225,14 @@ const BookDetail = ({
                     </div>
                   </div>
 
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <MessageCircle className="h-4 w-4" /> Message Owner
-                  </Button>
+                  <Link to="/messages">
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <MessageCircle className="h-4 w-4" /> Message Owner
+                    </Button>
+                  </Link>
                 </TabsContent>
               </Tabs>
             </CardContent>

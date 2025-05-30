@@ -81,7 +81,7 @@ const BookCard = ({
 
   return (
     <Card className="w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col bg-white hover:shadow-lg transition-shadow duration-300 mx-auto">
-      <div className="relative w-full aspect-[3/4] overflow-hidden">
+      <div className="relative w-full h-[280px] overflow-hidden">
         <img
           src={images[currentImageIndex]}
           alt={title}

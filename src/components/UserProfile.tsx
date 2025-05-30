@@ -268,9 +268,11 @@ const UserProfile = ({
                 </Button>
               )}
               {!isOwnProfile && (
-                <Button variant="outline" className="w-full mt-4" size="sm">
-                  <MessageCircle className="mr-2 h-4 w-4" /> Send Message
-                </Button>
+                <Link to="/messages">
+                  <Button variant="outline" className="w-full mt-4" size="sm">
+                    <MessageCircle className="mr-2 h-4 w-4" /> Send Message
+                  </Button>
+                </Link>
               )}
             </CardContent>
           </Card>
