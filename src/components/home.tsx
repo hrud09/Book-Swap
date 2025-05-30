@@ -92,18 +92,6 @@ const Home = () => {
             </Link>
           </div>
 
-          {/* Search bar - hidden on mobile */}
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                type="text"
-                placeholder="Search books by title, author, or genre..."
-                className="pl-10 w-full"
-              />
-            </div>
-          </div>
-
           {/* Navigation - desktop */}
           <nav className="hidden md:flex items-center space-x-4">
             <Link to="/profile">
@@ -147,14 +135,7 @@ const Home = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-border p-4 bg-background">
             <div className="flex items-center mb-4">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  type="text"
-                  placeholder="Search books..."
-                  className="pl-10 w-full"
-                />
-              </div>
+              {/* Removed search bar here */}
             </div>
             <nav className="flex flex-col space-y-2">
               <Link to="/profile">
@@ -183,27 +164,8 @@ const Home = () => {
 
       {/* Main content */}
       <main className="flex-1 container mx-auto px-4 py-6">
-        <section className="mb-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                Available Books
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Browse books available for exchange
-              </p>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <Button variant="outline" className="mr-2">
-                Latest
-              </Button>
-              <Button variant="outline">Popular</Button>
-            </div>
-          </div>
-
-          {/* Book grid component */}
-          <BookGrid />
-        </section>
+        {/* Book grid component */}
+        <BookGrid />
       </main>
 
       {/* Footer */}

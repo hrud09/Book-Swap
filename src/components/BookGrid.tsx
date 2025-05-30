@@ -65,7 +65,10 @@ const BookGrid = ({ books = defaultBooks }: BookGridProps) => {
 
     // Condition filter
     const matchesCondition =
-      selectedCondition === "all" || book.condition === selectedCondition;
+      selectedCondition === "all" ||
+      (["1", "2", "3", "4", "5"].includes(selectedCondition)
+        ? book.condition === Number(selectedCondition)
+        : false);
 
     // Tab filter
     const matchesTab =
@@ -182,7 +185,7 @@ const BookGrid = ({ books = defaultBooks }: BookGridProps) => {
 
       {/* Book Grid */}
       {filteredBooks.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid gap-2 grid-cols-[repeat(auto-fit,minmax(270px,1fr))] justify-items-center">
           {filteredBooks.map((book) => (
             <BookCard
               key={book.id}
