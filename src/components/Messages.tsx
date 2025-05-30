@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ interface Conversation {
 }
 
 const Messages = () => {
+  const navigate = useNavigate();
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "1",
@@ -191,19 +192,19 @@ const Messages = () => {
         <Button
           variant="outline"
           className="hover:bg-blue-100 flex items-center gap-2"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </Button>
       </div>
       {/* Main content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-2 sm:px-4 py-6">
         <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
           <MessageCircle className="h-6 w-6 text-primary" />
           Messages
         </h1>
-        <div className="flex flex-col md:flex-row h-[calc(100vh-14rem)] border rounded-lg overflow-hidden shadow-md">
+        <div className="flex flex-col md:flex-row h-[calc(100vh-14rem)] border rounded-lg overflow-hidden shadow-md bg-white">
           {/* Conversations sidebar */}
           <div className="w-full md:w-1/3 border-r">
             <div className="p-4 border-b">

@@ -185,7 +185,7 @@ const BookGrid = ({ books = defaultBooks }: BookGridProps) => {
 
       {/* Book Grid */}
       {filteredBooks.length > 0 ? (
-        <div className="grid gap-2 grid-cols-[repeat(auto-fit,minmax(270px,1fr))] justify-items-center">
+        <div className="grid gap-2 grid-cols-[repeat(auto-fit,minmax(270px,1fr))]">
           {filteredBooks.map((book) => (
             <BookCard
               key={book.id}
