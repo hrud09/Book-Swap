@@ -13,7 +13,14 @@ import {
   ChevronRight,
   DollarSign,
   ArrowLeftRight,
+  BookOpen,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface BookCardProps {
   id?: string;
@@ -27,11 +34,14 @@ interface BookCardProps {
   preferredExchangeBooks?: string[]; // Books owner wants in exchange
   isForSale?: boolean; // Whether book is for sale
   isForExchange?: boolean; // Whether book is for exchange
+  summary?: string; // Book summary for tooltip
+  reviewUrl?: string; // URL to book review
   owner?: {
     name: string;
     avatar: string;
   };
   onExchangeClick?: (book: any) => void;
+  onReviewClick?: (book: any) => void;
 }
 
 const BookCard = ({
@@ -48,11 +58,14 @@ const BookCard = ({
   preferredExchangeBooks = ["To Kill a Mockingbird", "1984"],
   isForSale = true,
   isForExchange = true,
+  summary = "A classic novel set in the Jazz Age, The Great Gatsby follows the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan. Through the eyes of narrator Nick Carraway, the story explores themes of decadence, idealism, social upheaval, and the American Dream.",
+  reviewUrl = "/book-review/1",
   owner = {
     name: "John Doe",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
   },
   onExchangeClick = () => {},
+  onReviewClick = () => {},
 }: BookCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
@@ -96,11 +109,23 @@ const BookCard = ({
       className={`w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 mx-auto ${getCardStyle()}`}
     >
       <div className="relative w-full h-[280px] overflow-hidden">
-        <img
-          src={images[currentImageIndex]}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-        />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <img
+                src={images[currentImageIndex]}
+                alt={title}
+                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              className="max-w-[250px] bg-white text-black border border-gray-200 shadow-lg p-3 text-xs"
+            >
+              <p>{summary}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {/* Image navigation */}
         {images.length > 1 && (
@@ -235,7 +260,7 @@ const BookCard = ({
         </div>
       </CardContent>
 
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 flex flex-col gap-2">
         <Button
           className="w-full font-medium transition-all duration-300 hover:scale-[1.02]"
           variant={
@@ -258,6 +283,8 @@ const BookCard = ({
               preferredExchangeBooks,
               isForSale,
               isForExchange,
+              summary,
+              reviewUrl,
               owner,
             })
           }
@@ -267,6 +294,22 @@ const BookCard = ({
             : isForSale
               ? "Buy"
               : "Exchange"}
+        </Button>
+
+        <Button
+          className="w-full font-medium transition-all duration-300 hover:scale-[1.02]"
+          variant="outline"
+          onClick={() =>
+            onReviewClick({
+              id,
+              title,
+              author,
+              reviewUrl,
+            })
+          }
+        >
+          <BookOpen className="h-4 w-4 mr-2" />
+          Read Review
         </Button>
       </CardFooter>
     </Card>
