@@ -37,10 +37,11 @@ import {
   MessageCircle,
   Camera,
   X,
+  ArrowLeft,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import BookCard from "./BookCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Book {
   id: string;
@@ -73,6 +74,7 @@ const UserProfile = ({
   userId = "1",
   isOwnProfile = true,
 }: UserProfileProps) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("available-books");
   const [showAddBookDialog, setShowAddBookDialog] = useState(false);
   const [newBook, setNewBook] = useState({
@@ -233,319 +235,504 @@ const UserProfile = ({
     },
   ];
 
-  const navigate = useNavigate();
-
   return (
-    <div className="container mx-auto py-8 bg-background">
-      <Button variant="outline" className="mb-4" onClick={() => navigate(-1)}>
-        Back
-      </Button>
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
+      <header className="bg-primary text-primary-foreground shadow-md">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <BookOpen className="h-6 w-6 text-white" />
+              <span className="text-xl font-bold">BookSwap</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+      <div className="container mx-auto py-8">
+        <Button
+          variant="outline"
+          className="mb-4 hover:bg-blue-100 flex items-center gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
+      </div>
+
+      {/* Profile Sidebar */}
       <div className="flex flex-col md:flex-row gap-8">
         {/* Profile Sidebar */}
         <div className="md:w-1/3">
-          <Card>
-            <CardHeader className="text-center">
-              <Avatar className="w-24 h-24 mx-auto mb-4">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <CardTitle>{user.name}</CardTitle>
+          <Card className="shadow-md border-t-4 border-t-primary overflow-hidden">
+            <CardHeader className="text-center bg-gradient-to-b from-blue-50 to-white pb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-blue-100 h-16 -mt-6"></div>
+                <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-white shadow-md relative z-10">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="bg-primary text-white text-2xl">
+                    {user.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <CardTitle className="text-2xl">{user.name}</CardTitle>
               <CardDescription className="flex flex-col gap-2">
-                <span>{user.location}</span>
-                <span>Member since {user.joinedDate}</span>
-                <Badge variant="secondary" className="self-center mt-2">
-                  {user.exchangesCompleted} Exchanges
-                </Badge>
+                <span className="flex items-center justify-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  {user.location}
+                </span>
+                <span className="flex items-center justify-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Member since {user.joinedDate}
+                </span>
+                <div className="flex justify-center gap-2 mt-2">
+                  <Badge
+                    variant="secondary"
+                    className="bg-yellow-400 text-black font-medium"
+                  >
+                    {user.exchangesCompleted} Exchanges
+                  </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-500 text-white font-medium"
+                  >
+                    Verified User
+                  </Badge>
+                </div>
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
-                <h3 className="font-medium mb-2">About</h3>
-                <p className="text-sm text-muted-foreground">{user.bio}</p>
+                <h3 className="font-medium mb-2 flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  About
+                </h3>
+                <p className="text-sm text-muted-foreground bg-blue-50 p-3 rounded-md">
+                  {user.bio}
+                </p>
               </div>
               <Separator className="my-4" />
               <div className="mb-4">
-                <h3 className="font-medium mb-2">Contact</h3>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
+                <h3 className="font-medium mb-2 flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Contact
+                </h3>
+                <p className="text-sm text-muted-foreground bg-blue-50 p-3 rounded-md flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {user.email}
+                </p>
               </div>
-              {isOwnProfile && (
-                <Button variant="outline" className="w-full mt-4" size="sm">
-                  <Settings className="mr-2 h-4 w-4" /> Edit Profile
-                </Button>
-              )}
-              {!isOwnProfile && (
-                <Link to="/messages">
-                  <Button variant="outline" className="w-full mt-4" size="sm">
-                    <MessageCircle className="mr-2 h-4 w-4" /> Send Message
+              <div className="mb-4">
+                <h3 className="font-medium mb-2 flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    />
+                  </svg>
+                  Reading Preferences
+                </h3>
+                <div className="flex flex-wrap gap-1">
+                  <Badge variant="outline" className="bg-blue-50">
+                    Fiction
+                  </Badge>
+                  <Badge variant="outline" className="bg-blue-50">
+                    Science Fiction
+                  </Badge>
+                  <Badge variant="outline" className="bg-blue-50">
+                    Mystery
+                  </Badge>
+                  <Badge variant="outline" className="bg-blue-50">
+                    Biography
+                  </Badge>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {isOwnProfile && (
+                  <Button
+                    variant="outline"
+                    className="w-full mt-2 border-primary hover:bg-blue-50"
+                    size="sm"
+                  >
+                    <Settings className="mr-2 h-4 w-4" /> Edit Profile
                   </Button>
-                </Link>
-              )}
+                )}
+                {isOwnProfile && (
+                  <Button
+                    variant="outline"
+                    className="w-full mt-2 border-green-500 text-green-600 hover:bg-green-50"
+                    size="sm"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Verify Account
+                  </Button>
+                )}
+                {!isOwnProfile && (
+                  <Link to="/messages" className="w-full">
+                    <Button
+                      variant="primary"
+                      className="w-full mt-2 bg-primary hover:bg-primary/90"
+                      size="sm"
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4" /> Send Message
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content */}
         <div className="md:w-2/3">
+          {/* Stats Section */}
+          <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-bold mb-4 flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2 text-primary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              Activity Statistics
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-l-blue-500">
+                <p className="text-sm text-muted-foreground">Books Listed</p>
+                <p className="text-2xl font-bold">{availableBooks.length}</p>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border-l-4 border-l-green-500">
+                <p className="text-sm text-muted-foreground">
+                  Exchanges Completed
+                </p>
+                <p className="text-2xl font-bold">{user.exchangesCompleted}</p>
+              </div>
+              <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-l-yellow-500">
+                <p className="text-sm text-muted-foreground">
+                  Pending Requests
+                </p>
+                <p className="text-2xl font-bold">{exchangeRequests.length}</p>
+              </div>
+              <div className="bg-red-50 p-4 rounded-lg border-l-4 border-l-red-500">
+                <p className="text-sm text-muted-foreground">Books Sold</p>
+                <p className="text-2xl font-bold">8</p>
+              </div>
+            </div>
+          </div>
+
           <Tabs
             defaultValue="available-books"
             value={activeTab}
             onValueChange={setActiveTab}
+            className="bg-white rounded-lg shadow-md overflow-hidden"
           >
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="available-books">
-                <BookOpen className="mr-2 h-4 w-4" /> Available Books
+            <TabsList className="grid w-full grid-cols-3 p-1 bg-blue-50">
+              <TabsTrigger
+                value="available-books"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  Available Books
+                </div>
               </TabsTrigger>
-              <TabsTrigger value="exchange-requests">
-                <History className="mr-2 h-4 w-4" /> Exchange Requests
+              <TabsTrigger
+                value="exchange-requests"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-primary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Exchange Requests
+                </div>
               </TabsTrigger>
-              <TabsTrigger value="exchange-history">
-                <History className="mr-2 h-4 w-4" /> Exchange History
+              <TabsTrigger
+                value="exchange-history"
+                className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <History className="h-4 w-4 text-primary" />
+                  Exchange History
+                </div>
               </TabsTrigger>
             </TabsList>
 
-            {/* Available Books Tab */}
-            <TabsContent value="available-books" className="mt-6">
+            <TabsContent value="available-books" className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Available Books</h2>
+                <h2 className="text-2xl font-bold flex items-center">
+                  <BookOpen className="mr-2 h-6 w-6 text-primary" />
+                  Available Books
+                </h2>
                 {isOwnProfile && (
-                  <Button onClick={() => setShowAddBookDialog(true)}>
+                  <Button
+                    onClick={() => setShowAddBookDialog(true)}
+                    className="bg-green-600 hover:bg-green-700 transition-all duration-200 hover:scale-105"
+                  >
                     <Plus className="mr-2 h-4 w-4" /> Add Book
                   </Button>
                 )}
               </div>
 
-              {availableBooks.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {availableBooks.map((book) => (
-                    <div key={book.id} className="relative">
-                      <BookCard
-                        title={book.title}
-                        author={book.author}
-                        coverImage={book.coverImage}
-                        condition={book.condition}
-                      />
-                      {isOwnProfile && (
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 bg-background/80 backdrop-blur-sm"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 bg-background/80 backdrop-blur-sm text-destructive"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 border rounded-lg">
-                  <p className="text-muted-foreground">
-                    No books available for exchange.
-                  </p>
-                  {isOwnProfile && (
-                    <Button
-                      variant="outline"
-                      className="mt-4"
-                      onClick={() => setShowAddBookDialog(true)}
-                    >
-                      <Plus className="mr-2 h-4 w-4" /> Add Your First Book
-                    </Button>
-                  )}
-                </div>
-              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {availableBooks.map((book) => (
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    showExchangeButton={!isOwnProfile}
+                  />
+                ))}
+              </div>
             </TabsContent>
 
-            {/* Exchange Requests Tab */}
-            <TabsContent value="exchange-requests" className="mt-6">
-              <h2 className="text-2xl font-bold mb-6">Exchange Requests</h2>
+            <TabsContent value="exchange-requests" className="p-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 mr-2 text-primary"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                  />
+                </svg>
+                Exchange Requests
+              </h2>
 
               {exchangeRequests.length > 0 ? (
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {exchangeRequests.map((request) => (
-                    <Card key={request.id}>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-3">
-                            <Avatar>
-                              <AvatarImage
-                                src={request.user.avatar}
-                                alt={request.user.name}
-                              />
-                              <AvatarFallback>
-                                {request.user.name.charAt(0)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <CardTitle className="text-lg">
-                                {request.user.name}
-                              </CardTitle>
-                              <CardDescription>
-                                Requested on{" "}
-                                {new Date(request.date).toLocaleDateString()}
-                              </CardDescription>
-                            </div>
-                          </div>
-                          <Badge>{request.status}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <h3 className="font-medium mb-2">Your Book</h3>
-                            <div className="flex gap-4">
-                              <img
-                                src={request.book.coverImage}
-                                alt={request.book.title}
-                                className="w-20 h-28 object-cover rounded-md"
-                              />
-                              <div>
-                                <p className="font-medium">
-                                  {request.book.title}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {request.book.author}
-                                </p>
-                                <Badge variant="outline" className="mt-2">
-                                  {request.book.condition}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-medium mb-2">Offered Book</h3>
-                            <div className="flex gap-4">
-                              <img
-                                src={request.offeredBook.coverImage}
-                                alt={request.offeredBook.title}
-                                className="w-20 h-28 object-cover rounded-md"
-                              />
-                              <div>
-                                <p className="font-medium">
-                                  {request.offeredBook.title}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {request.offeredBook.author}
-                                </p>
-                                <Badge variant="outline" className="mt-2">
-                                  {request.offeredBook.condition}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {request.message && (
-                          <div className="mt-4 p-3 bg-muted rounded-md">
-                            <p className="text-sm italic">
-                              "{request.message}"
+                    <Card key={request.id} className="overflow-hidden">
+                      <CardContent className="p-0">
+                        <div className="flex flex-col md:flex-row">
+                          <div className="md:w-1/4 p-4 bg-blue-50">
+                            <p className="font-medium">
+                              From: {request.user.name}
                             </p>
+                            <p className="text-sm text-muted-foreground">
+                              Date: {request.date}
+                            </p>
+                            <Badge
+                              className="mt-2"
+                              variant={
+                                request.status === "pending"
+                                  ? "outline"
+                                  : "secondary"
+                              }
+                            >
+                              {request.status.charAt(0).toUpperCase() +
+                                request.status.slice(1)}
+                            </Badge>
                           </div>
-                        )}
-
-                        {isOwnProfile && request.status === "pending" && (
-                          <div className="flex gap-4 mt-6">
-                            <Button className="flex-1">Accept Exchange</Button>
-                            <Button variant="outline" className="flex-1">
-                              Decline
-                            </Button>
-                            <Button variant="ghost">Message</Button>
+                          <div className="md:w-3/4 p-4">
+                            <div className="flex flex-col md:flex-row gap-4">
+                              <div className="flex-1">
+                                <p className="font-medium">They want:</p>
+                                <div className="mt-2">
+                                  <BookCard book={request.book} compact />
+                                </div>
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium">They offer:</p>
+                                <div className="mt-2">
+                                  <BookCard
+                                    book={request.offeredBook}
+                                    compact
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            {request.message && (
+                              <div className="mt-4 bg-blue-50 p-3 rounded-md">
+                                <p className="font-medium">Message:</p>
+                                <p className="text-sm">{request.message}</p>
+                              </div>
+                            )}
+                            {isOwnProfile && request.status === "pending" && (
+                              <div className="mt-4 flex gap-2 justify-end">
+                                <Button
+                                  variant="outline"
+                                  className="border-red-500 text-red-500 hover:bg-red-50"
+                                >
+                                  Decline
+                                </Button>
+                                <Button className="bg-green-600 hover:bg-green-700">
+                                  Accept
+                                </Button>
+                              </div>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 border rounded-lg">
+                <div className="text-center py-12">
                   <p className="text-muted-foreground">
-                    No exchange requests at the moment.
+                    No exchange requests yet.
                   </p>
                 </div>
               )}
             </TabsContent>
 
-            {/* Exchange History Tab */}
-            <TabsContent value="exchange-history" className="mt-6">
-              <h2 className="text-2xl font-bold mb-6">Exchange History</h2>
+            <TabsContent value="exchange-history" className="p-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <History className="h-6 w-6 mr-2 text-primary" />
+                Exchange History
+              </h2>
 
               {exchangeHistory.length > 0 ? (
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {exchangeHistory.map((exchange) => (
-                    <Card key={exchange.id}>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-3">
-                            <Avatar>
-                              <AvatarImage
-                                src={exchange.user.avatar}
-                                alt={exchange.user.name}
-                              />
-                              <AvatarFallback>
-                                {exchange.user.name.charAt(0)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <CardTitle className="text-lg">
-                                {exchange.user.name}
-                              </CardTitle>
-                              <CardDescription>
-                                Exchanged on{" "}
-                                {new Date(exchange.date).toLocaleDateString()}
-                              </CardDescription>
-                            </div>
+                    <Card key={exchange.id} className="overflow-hidden">
+                      <CardContent className="p-0">
+                        <div className="flex flex-col md:flex-row">
+                          <div className="md:w-1/4 p-4 bg-green-50">
+                            <p className="font-medium">
+                              With: {exchange.user.name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Date: {exchange.date}
+                            </p>
+                            <Badge
+                              className="mt-2"
+                              variant="secondary"
+                              className="bg-green-500 text-white"
+                            >
+                              Completed
+                            </Badge>
                           </div>
-                          <Badge variant="secondary">{exchange.status}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <h3 className="font-medium mb-2">Your Book</h3>
-                            <div className="flex gap-4">
-                              <img
-                                src={exchange.book.coverImage}
-                                alt={exchange.book.title}
-                                className="w-20 h-28 object-cover rounded-md"
-                              />
-                              <div>
-                                <p className="font-medium">
-                                  {exchange.book.title}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {exchange.book.author}
-                                </p>
-                                <Badge variant="outline" className="mt-2">
-                                  {exchange.book.condition}
-                                </Badge>
+                          <div className="md:w-3/4 p-4">
+                            <div className="flex flex-col md:flex-row gap-4">
+                              <div className="flex-1">
+                                <p className="font-medium">You exchanged:</p>
+                                <div className="mt-2">
+                                  <BookCard book={exchange.book} compact />
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 className="font-medium mb-2">Received Book</h3>
-                            <div className="flex gap-4">
-                              <img
-                                src={exchange.offeredBook.coverImage}
-                                alt={exchange.offeredBook.title}
-                                className="w-20 h-28 object-cover rounded-md"
-                              />
-                              <div>
-                                <p className="font-medium">
-                                  {exchange.offeredBook.title}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {exchange.offeredBook.author}
-                                </p>
-                                <Badge variant="outline" className="mt-2">
-                                  {exchange.offeredBook.condition}
-                                </Badge>
+                              <div className="flex-1">
+                                <p className="font-medium">You received:</p>
+                                <div className="mt-2">
+                                  <BookCard
+                                    book={exchange.offeredBook}
+                                    compact
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -555,7 +742,7 @@ const UserProfile = ({
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 border rounded-lg">
+                <div className="text-center py-12">
                   <p className="text-muted-foreground">
                     No exchange history yet.
                   </p>
@@ -565,255 +752,6 @@ const UserProfile = ({
           </Tabs>
         </div>
       </div>
-
-      {/* Add Book Dialog */}
-      <Dialog open={showAddBookDialog} onOpenChange={setShowAddBookDialog}>
-        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add Your Book</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium mb-2 block">Title</label>
-                <Input
-                  placeholder="Book title"
-                  value={newBook.title}
-                  onChange={(e) =>
-                    setNewBook({ ...newBook, title: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">Author</label>
-                <Input
-                  placeholder="Author name"
-                  value={newBook.author}
-                  onChange={(e) =>
-                    setNewBook({ ...newBook, author: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium mb-2 block">Genre</label>
-                <Input
-                  placeholder="Book genre"
-                  value={newBook.genre}
-                  onChange={(e) =>
-                    setNewBook({ ...newBook, genre: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Condition
-                </label>
-                <Select
-                  value={newBook.condition}
-                  onValueChange={(value: Book["condition"]) =>
-                    setNewBook({ ...newBook, condition: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select condition" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="New">New</SelectItem>
-                    <SelectItem value="Like New">Like New</SelectItem>
-                    <SelectItem value="Very Good">Very Good</SelectItem>
-                    <SelectItem value="Good">Good</SelectItem>
-                    <SelectItem value="Fair">Fair</SelectItem>
-                    <SelectItem value="Poor">Poor</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">
-                Asking Books
-              </label>
-              <Textarea
-                placeholder="What books are you looking for in exchange? (e.g., Fiction novels, Science textbooks, etc.)"
-                value={newBook.askingBooks}
-                onChange={(e) =>
-                  setNewBook({ ...newBook, askingBooks: e.target.value })
-                }
-                rows={3}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Asking Price (Optional)
-                </label>
-                <Input
-                  placeholder="Price in BDT (if selling)"
-                  value={newBook.askingPrice}
-                  onChange={(e) =>
-                    setNewBook({ ...newBook, askingPrice: e.target.value })
-                  }
-                  type="number"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Purchase Date
-                </label>
-                <Input
-                  type="date"
-                  value={newBook.purchaseDate}
-                  onChange={(e) =>
-                    setNewBook({ ...newBook, purchaseDate: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="rokomari-checkbox"
-                checked={newBook.boughtFromRokomari}
-                onCheckedChange={(checked) =>
-                  setNewBook({
-                    ...newBook,
-                    boughtFromRokomari: checked as boolean,
-                  })
-                }
-              />
-              <label
-                htmlFor="rokomari-checkbox"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Bought from Rokomari
-              </label>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Photos</label>
-              <div className="border-2 border-dashed border-border rounded-md p-4">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => {
-                    const files = e.target.files;
-                    if (files) {
-                      const imageUrls = Array.from(files).map((file) =>
-                        URL.createObjectURL(file),
-                      );
-                      setNewBook({
-                        ...newBook,
-                        images: [...newBook.images, ...imageUrls],
-                      });
-                    }
-                  }}
-                  className="hidden"
-                  id="image-upload-profile"
-                />
-                <label
-                  htmlFor="image-upload-profile"
-                  className="flex flex-col items-center cursor-pointer"
-                >
-                  <Camera className="h-8 w-8 text-muted-foreground mb-2" />
-                  <span className="text-sm text-muted-foreground">
-                    Click to upload photos
-                  </span>
-                </label>
-              </div>
-
-              {newBook.images.length > 0 && (
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  {newBook.images.map((image, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        src={image}
-                        alt={`Book ${index + 1}`}
-                        className="w-full h-20 object-cover rounded"
-                      />
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                        className="absolute -top-2 -right-2 h-6 w-6"
-                        onClick={() => {
-                          setNewBook({
-                            ...newBook,
-                            images: newBook.images.filter(
-                              (_, i) => i !== index,
-                            ),
-                          });
-                        }}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setShowAddBookDialog(false);
-                setNewBook({
-                  title: "",
-                  author: "",
-                  images: [],
-                  condition: "Very Good",
-                  genre: "",
-                  askingBooks: "",
-                  askingPrice: "",
-                  purchaseDate: "",
-                  boughtFromRokomari: false,
-                });
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                const bookToAdd: Book = {
-                  id: Date.now().toString(),
-                  title: newBook.title,
-                  author: newBook.author,
-                  coverImage:
-                    newBook.images[0] ||
-                    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&q=80",
-                  condition: newBook.condition,
-                  genre: newBook.genre,
-                };
-
-                setAvailableBooks((prevBooks) => [...prevBooks, bookToAdd]);
-                setShowAddBookDialog(false);
-
-                // Reset form
-                setNewBook({
-                  title: "",
-                  author: "",
-                  images: [],
-                  condition: "Very Good",
-                  genre: "",
-                  askingBooks: "",
-                  askingPrice: "",
-                  purchaseDate: "",
-                  boughtFromRokomari: false,
-                });
-              }}
-              disabled={
-                !newBook.title || !newBook.author || newBook.images.length === 0
-              }
-            >
-              Add Book
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

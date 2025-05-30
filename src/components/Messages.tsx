@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { BookOpen, Search, ArrowLeft, Send } from "lucide-react";
+import { BookOpen, Search, ArrowLeft, Send, MessageCircle } from "lucide-react";
 
 interface Message {
   id: string;
@@ -174,27 +174,36 @@ const Messages = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background border-b border-border shadow-sm">
+      <header className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-md">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-primary" />
+              <BookOpen className="h-6 w-6 text-white" />
               <span className="text-xl font-bold">BookSwap</span>
             </Link>
           </div>
         </div>
       </header>
-      <Button variant="outline" className="m-4" onClick={() => navigate(-1)}>
-        Back
-      </Button>
+      <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4">
+        <Button
+          variant="outline"
+          className="hover:bg-blue-100 flex items-center gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
+      </div>
       {/* Main content */}
       <main className="container mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row h-[calc(100vh-12rem)] border rounded-lg overflow-hidden">
+        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <MessageCircle className="h-6 w-6 text-primary" />
+          Messages
+        </h1>
+        <div className="flex flex-col md:flex-row h-[calc(100vh-14rem)] border rounded-lg overflow-hidden shadow-md">
           {/* Conversations sidebar */}
           <div className="w-full md:w-1/3 border-r">
             <div className="p-4 border-b">
@@ -212,7 +221,7 @@ const Messages = () => {
               {filteredConversations.map((conversation) => (
                 <div
                   key={conversation.id}
-                  className={`p-4 border-b cursor-pointer hover:bg-muted/50 transition-colors ${selectedConversation === conversation.id ? "bg-muted" : ""}`}
+                  className={`p-4 border-b cursor-pointer hover:bg-blue-50 transition-all duration-200 ${selectedConversation === conversation.id ? "bg-blue-100 border-l-4 border-l-primary" : ""}`}
                   onClick={() => setSelectedConversation(conversation.id)}
                 >
                   <div className="flex items-center gap-3">
@@ -316,7 +325,7 @@ const Messages = () => {
                         className={`flex ${message.senderId === "current-user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[70%] rounded-lg p-3 ${message.senderId === "current-user" ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+                          className={`max-w-[70%] rounded-lg p-3 shadow-sm ${message.senderId === "current-user" ? "bg-primary text-primary-foreground" : "bg-blue-50 border border-blue-100"}`}
                         >
                           <p>{message.text}</p>
                           <div
@@ -331,13 +340,13 @@ const Messages = () => {
               </ScrollArea>
 
               {/* Message input */}
-              <div className="p-4 border-t">
+              <div className="p-4 border-t bg-gradient-to-r from-blue-50 to-white">
                 <div className="flex gap-2">
                   <Textarea
                     placeholder="Type a message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="min-h-[60px] resize-none"
+                    className="min-h-[60px] resize-none border-blue-200 focus:border-blue-400 shadow-sm"
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
@@ -346,7 +355,7 @@ const Messages = () => {
                     }}
                   />
                   <Button
-                    className="self-end"
+                    className="self-end transition-all duration-200 hover:scale-105"
                     size="icon"
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim()}

@@ -79,8 +79,22 @@ const BookCard = ({
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
+  // Determine card style based on exchange/sale status
+  const getCardStyle = () => {
+    if (isForSale && isForExchange) {
+      return "border-l-4 border-l-[#9333ea] bg-gradient-to-br from-white to-purple-50 hover:shadow-purple-200";
+    } else if (isForSale) {
+      return "border-l-4 border-l-red-500 bg-gradient-to-br from-white to-red-50 hover:shadow-red-200";
+    } else if (isForExchange) {
+      return "border-l-4 border-l-blue-500 bg-gradient-to-br from-white to-blue-50 hover:shadow-blue-200";
+    }
+    return "";
+  };
+
   return (
-    <Card className="w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col bg-white hover:shadow-lg transition-shadow duration-300 mx-auto">
+    <Card
+      className={`w-full max-w-[480px] sm:max-w-xs h-[480px] overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 mx-auto ${getCardStyle()}`}
+    >
       <div className="relative w-full h-[280px] overflow-hidden">
         <img
           src={images[currentImageIndex]}
@@ -129,7 +143,7 @@ const BookCard = ({
           {isForSale && (
             <Badge
               variant="secondary"
-              className="text-xs bg-green-100 text-green-800"
+              className="text-xs bg-red-500 text-white font-medium shadow-sm"
             >
               <DollarSign className="h-3 w-3 mr-1" />
               For Sale
@@ -138,7 +152,7 @@ const BookCard = ({
           {isForExchange && (
             <Badge
               variant="secondary"
-              className="text-xs bg-blue-100 text-blue-800"
+              className="text-xs bg-blue-500 text-white font-medium shadow-sm"
             >
               <ArrowLeftRight className="h-3 w-3 mr-1" />
               Exchange
@@ -223,7 +237,14 @@ const BookCard = ({
 
       <CardFooter className="pt-0">
         <Button
-          className="w-full"
+          className="w-full font-medium transition-all duration-300 hover:scale-[1.02]"
+          variant={
+            isForSale && isForExchange
+              ? "default"
+              : isForSale
+                ? "destructive"
+                : "primary"
+          }
           onClick={() =>
             onExchangeClick({
               id,
