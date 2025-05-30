@@ -11,7 +11,7 @@ const BookDetail = lazy(() => import("./components/BookDetail"));
 function App() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <>
+      <div className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -29,7 +29,7 @@ function App() {
           )}
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
-      </>
+      </div>
     </Suspense>
   );
 }
