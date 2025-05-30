@@ -94,7 +94,7 @@ const Home = () => {
 
           {/* Navigation - desktop */}
           <nav className="hidden md:flex items-center space-x-4">
-            <Link to="/profile">
+            <Link to="/UserProfile">
               <Button
                 variant="ghost"
                 size="sm"
@@ -138,7 +138,7 @@ const Home = () => {
               {/* Removed search bar here */}
             </div>
             <nav className="flex flex-col space-y-2">
-              <Link to="/profile">
+              <Link to="/UserProfile">
                 <Button variant="ghost" className="w-full justify-start">
                   <User className="h-4 w-4 mr-2" />
                   Profile

@@ -15,11 +15,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
-            path="/profile"
+            path="/UserProfile"
             element={<UserProfile isOwnProfile={true} />}
           />
           <Route
-            path="/profile/:userId"
+            path="/UserProfile/:userId"
             element={<UserProfile isOwnProfile={false} />}
           />
           <Route path="/messages" element={<Messages />} />

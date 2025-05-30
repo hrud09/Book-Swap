@@ -69,6 +69,15 @@ interface Book {
   coverImage: string;
   condition: "New" | "Like New" | "Very Good" | "Good" | "Fair" | "Poor";
   genre: string;
+  askingPrice?: number;
+  rokomariPrice?: number;
+  preferredExchangeBooks?: string[];
+  isForSale?: boolean;
+  isForExchange?: boolean;
+  owner?: {
+    name: string;
+    avatar: string;
+  };
 }
 
 interface ExchangeRequest {
@@ -134,7 +143,7 @@ const UserProfile = ({
         newBook.images[0] ||
         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&q=80",
       condition: newBook.condition,
-      genre: newBook.genre || "Fiction",
+      genre: "Fiction", // Default genre
     };
 
     setAvailableBooks([newBookToAdd, ...availableBooks]);
@@ -618,24 +627,7 @@ const UserProfile = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {/* Cover Photo */}
-      <div className="w-full h-64 bg-gradient-to-r from-blue-400 to-purple-500 relative overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80"
-          alt="Book collection"
-          className="w-full h-full object-cover opacity-60"
-        />
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/50 to-transparent"></div>
-        {isOwnProfile && (
-          <Button
-            variant="outline"
-            size="sm"
-            className="absolute bottom-4 right-4 bg-white/80 hover:bg-white"
-          >
-            <Camera className="h-4 w-4 mr-2" /> Change Cover
-          </Button>
-        )}
-      </div>
+      {/* Remove Cover Photo Section */}
       <header className="bg-white/90 backdrop-blur-md shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center">
@@ -643,31 +635,6 @@ const UserProfile = ({
               <BookOpen className="h-6 w-6 text-primary" />
               <span className="text-xl font-bold text-primary">BookSwap</span>
             </Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/messages">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-primary relative"
-              >
-                <MessageCircle className="h-5 w-5 mr-1" /> Messages
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  3
-                </span>
-              </Button>
-            </Link>
-            <Link to="/profile">
-              <Button variant="ghost" size="sm" className="text-primary">
-                <User className="h-5 w-5 mr-1" /> Profile
-              </Button>
-            </Link>
-            <Button variant="ghost" size="sm" className="text-primary relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                2
-              </span>
-            </Button>
           </div>
         </div>
       </header>
@@ -683,7 +650,7 @@ const UserProfile = ({
       </div>
 
       {/* Profile Content */}
-      <div className="flex flex-col md:flex-row gap-8 container mx-auto px-4 -mt-32 relative z-10">
+      <div className="flex flex-col md:flex-row gap-8 container mx-auto px-4">
         {/* Profile Sidebar */}
         <div className="md:w-1/3">
           <Card className="shadow-xl border-none rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm">
@@ -936,7 +903,7 @@ const UserProfile = ({
                     </Button>
                     <Link to="/messages" className="flex-1">
                       <Button
-                        variant="primary"
+                        variant="default"
                         className="w-full bg-primary hover:bg-primary/90"
                         size="sm"
                       >
@@ -952,31 +919,6 @@ const UserProfile = ({
 
         {/* Main Content */}
         <div className="md:w-2/3">
-          {/* Quick Actions */}
-          <div className="mb-6 flex flex-wrap gap-3">
-            <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md">
-              <Plus className="mr-2 h-4 w-4" /> Add New Book
-            </Button>
-            <Button
-              variant="outline"
-              className="border-blue-300 hover:bg-blue-50"
-            >
-              <BookOpen className="mr-2 h-4 w-4" /> Browse Books
-            </Button>
-            <Button
-              variant="outline"
-              className="border-blue-300 hover:bg-blue-50"
-            >
-              <Gift className="mr-2 h-4 w-4" /> Special Offers
-            </Button>
-            <Button
-              variant="outline"
-              className="border-blue-300 hover:bg-blue-50"
-            >
-              <Share2 className="mr-2 h-4 w-4" /> Share Profile
-            </Button>
-          </div>
-
           {/* Stats Section */}
           <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg">
             <h2 className="text-xl font-bold mb-4 flex items-center">
@@ -1159,12 +1101,12 @@ const UserProfile = ({
                       rokomariPrice={300}
                       isForSale={true}
                       isForExchange={true}
-                      onExchangeClick={(book) =>
-                        console.log("Exchange clicked", book)
-                      }
-                      onReviewClick={(book) =>
-                        console.log("Review clicked", book)
-                      }
+                      owner={{
+                        name: user.name,
+                        avatar: user.avatar
+                      }}
+                      onExchangeClick={(book) => console.log("Exchange clicked", book)}
+                      onReviewClick={(book) => console.log("Review clicked", book)}
                     />
                   </div>
                 ))}
@@ -1289,7 +1231,27 @@ const UserProfile = ({
                                   They want:
                                 </p>
                                 <div className="mt-2">
-                                  <BookCard book={request.book} compact />
+                                  <BookCard
+                                    id={request.book.id}
+                                    title={request.book.title}
+                                    author={request.book.author}
+                                    images={[request.book.coverImage]}
+                                    condition={
+                                      request.book.condition === "New"
+                                        ? 5
+                                        : request.book.condition === "Like New"
+                                          ? 4
+                                          : request.book.condition === "Very Good"
+                                            ? 3
+                                            : request.book.condition === "Good"
+                                              ? 2
+                                              : 1
+                                    }
+                                    genre={request.book.genre}
+                                    isForSale={true}
+                                    isForExchange={true}
+                                    owner={request.user}
+                                  />
                                 </div>
                               </div>
                               <div className="flex-1">
@@ -1299,8 +1261,25 @@ const UserProfile = ({
                                 </p>
                                 <div className="mt-2">
                                   <BookCard
-                                    book={request.offeredBook}
-                                    compact
+                                    id={request.offeredBook.id}
+                                    title={request.offeredBook.title}
+                                    author={request.offeredBook.author}
+                                    images={[request.offeredBook.coverImage]}
+                                    condition={
+                                      request.offeredBook.condition === "New"
+                                        ? 5
+                                        : request.offeredBook.condition === "Like New"
+                                          ? 4
+                                          : request.offeredBook.condition === "Very Good"
+                                            ? 3
+                                            : request.offeredBook.condition === "Good"
+                                              ? 2
+                                              : 1
+                                    }
+                                    genre={request.offeredBook.genre}
+                                    isForSale={true}
+                                    isForExchange={true}
+                                    owner={request.user}
                                   />
                                 </div>
                               </div>
@@ -1411,9 +1390,8 @@ const UserProfile = ({
                               </div>
                             </div>
                             <Badge
-                              className="mt-3"
+                              className="mt-3 bg-green-500 text-white"
                               variant="secondary"
-                              className="bg-green-500 text-white"
                             >
                               Completed
                             </Badge>
@@ -1445,7 +1423,27 @@ const UserProfile = ({
                                   You exchanged:
                                 </p>
                                 <div className="mt-2">
-                                  <BookCard book={exchange.book} compact />
+                                  <BookCard
+                                    id={exchange.book.id}
+                                    title={exchange.book.title}
+                                    author={exchange.book.author}
+                                    images={[exchange.book.coverImage]}
+                                    condition={
+                                      exchange.book.condition === "New"
+                                        ? 5
+                                        : exchange.book.condition === "Like New"
+                                          ? 4
+                                          : exchange.book.condition === "Very Good"
+                                            ? 3
+                                            : exchange.book.condition === "Good"
+                                              ? 2
+                                              : 1
+                                    }
+                                    genre={exchange.book.genre}
+                                    isForSale={true}
+                                    isForExchange={true}
+                                    owner={exchange.user}
+                                  />
                                 </div>
                               </div>
                               <div className="flex-1">
@@ -1455,8 +1453,25 @@ const UserProfile = ({
                                 </p>
                                 <div className="mt-2">
                                   <BookCard
-                                    book={exchange.offeredBook}
-                                    compact
+                                    id={exchange.offeredBook.id}
+                                    title={exchange.offeredBook.title}
+                                    author={exchange.offeredBook.author}
+                                    images={[exchange.offeredBook.coverImage]}
+                                    condition={
+                                      exchange.offeredBook.condition === "New"
+                                        ? 5
+                                        : exchange.offeredBook.condition === "Like New"
+                                          ? 4
+                                          : exchange.offeredBook.condition === "Very Good"
+                                            ? 3
+                                            : exchange.offeredBook.condition === "Good"
+                                              ? 2
+                                              : 1
+                                    }
+                                    genre={exchange.offeredBook.genre}
+                                    isForSale={true}
+                                    isForExchange={true}
+                                    owner={exchange.user}
                                   />
                                 </div>
                               </div>
@@ -1643,66 +1658,3 @@ const UserProfile = ({
 };
 
 export default UserProfile;
-
-// This is a simplified version of the BookCard component for the profile page
-interface BookCardProps {
-  book: Book;
-  compact?: boolean;
-  showExchangeButton?: boolean;
-}
-
-const BookCard = ({
-  book,
-  compact = false,
-  showExchangeButton = true,
-}: BookCardProps) => {
-  return (
-    <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden ${compact ? "h-32 flex" : "h-auto"}`}
-    >
-      {compact ? (
-        <>
-          <div className="w-1/3 h-full">
-            <img
-              src={book.coverImage}
-              alt={book.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="w-2/3 p-3">
-            <h3 className="font-medium text-sm line-clamp-1">{book.title}</h3>
-            <p className="text-xs text-muted-foreground">{book.author}</p>
-            <div className="flex items-center mt-1">
-              <Badge variant="outline" className="text-xs">
-                {book.condition}
-              </Badge>
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="aspect-[3/4] w-full">
-            <img
-              src={book.coverImage}
-              alt={book.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="p-4">
-            <h3 className="font-medium line-clamp-1">{book.title}</h3>
-            <p className="text-sm text-muted-foreground">{book.author}</p>
-            <div className="flex items-center justify-between mt-2">
-              <Badge variant="outline">{book.condition}</Badge>
-              <Badge>{book.genre}</Badge>
-            </div>
-            {showExchangeButton && (
-              <Button className="w-full mt-3" size="sm">
-                Request Exchange
-              </Button>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
