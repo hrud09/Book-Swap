@@ -237,13 +237,13 @@ const BookCard = ({
 
       <CardFooter className="pt-0">
         <Button
-          className="w-full font-medium transition-all duration-300 hover:scale-[1.02]"
+          className={`w-full font-medium transition-all duration-300 hover:scale-[1.02] ${!isForSale && isForExchange ? 'bg-yellow-400 text-white hover:bg-yellow-500' : ''}`}
           variant={
             isForSale && isForExchange
               ? "default"
               : isForSale
                 ? "destructive"
-                : "primary"
+                : "secondary"
           }
           onClick={() =>
             onExchangeClick({
